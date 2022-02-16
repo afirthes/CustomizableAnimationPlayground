@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<script>
+    let eventSource;
+
+    function start() { // когда нажата кнопка "Старт"
+        if (!window.EventSource) {
+            // Internet Explorer или устаревшие браузеры
+            alert("Browser doesnt supports EventSource.");
+            return;
+        }
+
+        eventSource = new EventSource('digits');
+
+        eventSource.onopen = function(e) {
+            log("Event: open");
+        };
+
+        eventSource.onerror = function(e) {
+            log("Event: error");
+            if (this.readyState == EventSource.CONNECTING) {
+                log(`Reconnecting (readyState=${this.readyState})...`);
+            } else {
+                log("Wow... error!");
+            }
+        };
+
+        eventSource.addEventListener('bye', function(e) {
+            console.log("Event")
+            log("Event: bye, data: " + e.data);
+        });
+
+        eventSource.onmessage = function(e) {
+            console.log("Message")
+            log("Event: message, data: " + e.data);
+        };
+    }
+
+    function stop() { // когда нажата кнопка "Стоп"
+        eventSource.close();
+        log("connection closed");
+    }
+
+    function log(msg) {
+        logElem.innerHTML += msg + "<br>";
+        document.documentElement.scrollTop = 99999999;
+    }
+</script>
+
+<button onclick="start()">Start</button> Press "Start" to start
+<div id="logElem" style="margin: 6px 0"></div>
+
+<button onclick="stop()">Stop</button> Press "Stop" to stop
