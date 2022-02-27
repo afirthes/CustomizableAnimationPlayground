@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -67,5 +68,10 @@ public class Controller {
             }
         });
         return emitter;
+    }
+
+    public static void main(String[] args) {
+
+        List.of(1,12,3)
     }
 }
